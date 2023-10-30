@@ -6,12 +6,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
+import { formatPhoneNumber } from '../../../util/format'
 import {
   GridRowsProp,
   GridRowModesModel,
   GridRowModes,
   DataGrid,
   GridColDef,
+  GridColTypeDef,
   GridToolbarContainer,
   GridActionsCellItem,
   GridEventListener,
@@ -102,9 +104,16 @@ export default function FullFeaturedCrudGrid() {
     setRowModesModel(newRowModesModel);
   };
 
+  
+  const phoneNumber: GridColTypeDef = {
+    width: 130,
+    valueFormatter: ({ value }) => formatPhoneNumber(value || ''),
+    cellClassName: 'font-tabular-nums',
+  };
+
   const columns: GridColDef[] = [
     { field: 'licensePlateNumber', headerName: 'License Plate Number', width: 180, editable: true },
-    { field: 'phoneNumber', headerName: 'Phone Number', width: 180, editable: true },
+    { field: 'phoneNumber', headerName: 'Phone Number', width: 180, editable: true, ...phoneNumber },
     {
       field: 'enteredAt',
       headerName: 'Entered At',
