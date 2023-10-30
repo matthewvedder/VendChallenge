@@ -108,14 +108,14 @@ export default function FullFeaturedCrudGrid() {
     {
       field: 'enteredAt',
       headerName: 'Entered At',
-      type: 'date',
+      type: 'dateTime',
       width: 180,
       editable: true,
     },
     {
       field: 'exitedAt',
       headerName: 'Exited At',
-      type: 'date',
+      type: 'dateTime',
       width: 180,
       editable: true,
     },
