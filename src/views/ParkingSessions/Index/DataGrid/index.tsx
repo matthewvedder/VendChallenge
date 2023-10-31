@@ -1,13 +1,22 @@
 // libraries
 import * as React from 'react';
+import { Link } from  'react-router-dom'
 // components
 import Box from '@mui/material/Box';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import { DataGrid, GridColDef, GridActionsCellItem, GridRowParams } from '@mui/x-data-grid';
+import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
+import { 
+  DataGrid, 
+  GridColDef, 
+  GridActionsCellItem, 
+  GridRowParams,
+  GridToolbarContainer
+} from '@mui/x-data-grid';
 // utils
-import { formatPhoneNumber } from '../../../util/format/';
+import { formatPhoneNumber } from '../../../../util/format';
+// styles
+import './index.css'
 
 const columns: GridColDef[] = [
   { 
@@ -101,6 +110,19 @@ const rows = [
   }
 ];
 
+function EditToolbar() {
+
+  return (
+    <GridToolbarContainer>
+      <Link to="/parking-sessions/create">
+        <Button color="primary" startIcon={<AddIcon />}>
+          Create Parking Session
+        </Button>
+      </Link>
+    </GridToolbarContainer>
+  );
+}
+
 export default function ParkingSessionsGrid() {
   return (
     <Box sx={{ height: 400, width: '100%', marginTop: 10 }}>
@@ -116,6 +138,9 @@ export default function ParkingSessionsGrid() {
         }}
         pageSizeOptions={[20, 50, 100]}
         disableRowSelectionOnClick
+        slots={{
+          toolbar: EditToolbar,
+        }}
       />
     </Box>
   );
