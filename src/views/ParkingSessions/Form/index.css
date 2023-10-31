@@ -1,0 +1,9 @@
+.parking-session-form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+}
+
+.parking-session-form .MuiFormControl-root {
+    margin-bottom: 30px;
+}
