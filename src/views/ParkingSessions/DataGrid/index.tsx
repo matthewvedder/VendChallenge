@@ -2,7 +2,9 @@
 import * as React from 'react';
 // components
 import Box from '@mui/material/Box';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import { DataGrid, GridColDef, GridActionsCellItem, GridRowParams } from '@mui/x-data-grid';
 // utils
 import { formatPhoneNumber } from '../../../util/format/';
 
@@ -35,6 +37,14 @@ const columns: GridColDef[] = [
     headerName: 'Status',
     width: 220,
   },
+  {
+    field: 'actions',
+    type: 'actions',
+    headerName: 'Actions',
+    getActions: (params: GridRowParams) => [
+      <GridActionsCellItem icon={<EditIcon />} label="Edit" />,
+    ]
+  }
 ]
 
 const rows = [
@@ -80,7 +90,7 @@ const rows = [
   }
 ];
 
-export default function DataGridDemo() {
+export default function ParkingSessionsGrid() {
   return (
     <Box sx={{ height: 400, width: '100%', marginTop: 10 }}>
       <DataGrid
