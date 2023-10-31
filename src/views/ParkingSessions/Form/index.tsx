@@ -36,6 +36,7 @@ export default function ParkingSessionForm() {
 
       <DateTimePicker
         label="Exited At *"
+        onChange={(value) => { console.log(value) }}
       />
 
       <FormControl>
