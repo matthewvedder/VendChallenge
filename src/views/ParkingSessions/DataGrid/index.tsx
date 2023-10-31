@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import { DataGrid, GridColDef, GridActionsCellItem, GridRowParams } from '@mui/x-data-grid';
+import Button from '@mui/material/Button';
 // utils
 import { formatPhoneNumber } from '../../../util/format/';
 
@@ -35,15 +36,25 @@ const columns: GridColDef[] = [
   {
     field: 'status',
     headerName: 'Status',
-    width: 220,
   },
   {
     field: 'actions',
     type: 'actions',
-    headerName: 'Actions',
+    headerName: 'Edit',
     getActions: (params: GridRowParams) => [
       <GridActionsCellItem icon={<EditIcon />} label="Edit" />,
     ]
+  },
+  {
+    field: 'complete',
+    type: 'actions',
+    getActions: (params: GridRowParams) => {
+      console.log(params.row.status)
+      if (params.row.status === 'completed') return []
+      return [
+        <Button variant="text">Complete</Button>
+      ]
+    }
   }
 ]
 
