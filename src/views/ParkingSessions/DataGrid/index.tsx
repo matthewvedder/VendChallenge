@@ -7,7 +7,11 @@ import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { formatPhoneNumber } from '../../../util/format/';
 
 const columns: GridColDef[] = [
-  { field: 'licensePlateNumber', headerName: 'License Plate Number', width: 180, editable: true },
+  { 
+    field: 'licensePlateNumber', 
+    headerName: 'License Plate Number', 
+    width: 180 
+  },
   { 
     field: 'phoneNumber', 
     headerName: 'Phone Number', 
@@ -18,13 +22,13 @@ const columns: GridColDef[] = [
     field: 'enteredAt',
     headerName: 'Entered At',
     type: 'dateTime',
-    width: 180,
+    width: 200,
   },
   {
     field: 'exitedAt',
     headerName: 'Exited At',
     type: 'dateTime',
-    width: 180,
+    width: 200,
   },
   {
     field: 'status',
