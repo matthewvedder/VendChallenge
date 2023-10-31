@@ -1,5 +1,8 @@
 // libraries
 import React from 'react';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -15,15 +18,16 @@ import './App.css';
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<ParkingSessions />} />
-          <Route path="/parking-sessions/create" element={<CreateParkingSession />} />
-        </Routes>
-      </div>
-    </Router>
-
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Router>
+        <div className="App">
+          <Routes>
+            <Route path="/" element={<ParkingSessions />} />
+            <Route path="/parking-sessions/create" element={<CreateParkingSession />} />
+          </Routes>
+        </div>
+      </Router>
+    </LocalizationProvider>
   );
 }
 

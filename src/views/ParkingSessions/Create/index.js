@@ -1,24 +1,18 @@
 // libraries
 import * as React from 'react'
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
+// components
+import Form from '../Form'
+// styles
+import './index.css'
 
 
 
 export default function CreateParkingSession() {
     return (
-      <Box
-        component="form"
-        sx={{
-          '& > :not(style)': { m: 1, width: '25ch' },
-        }}
-        noValidate
-        autoComplete="off"
-      >
-        <TextField id="outlined-basic" label="Outlined" variant="outlined" />
-        <TextField id="filled-basic" label="Filled" variant="filled" />
-        <TextField id="standard-basic" label="Standard" variant="standard" />
-      </Box>
+      <div className='create-parking-session'>
+        <h1>Create Parking Session</h1>
+        <Form />
+      </div>
     );
   }
 
