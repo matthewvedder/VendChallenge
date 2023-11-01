@@ -65,5 +65,5 @@ test('validateStatus valid', () => {
 
 test('validateStatus invalid', () => {
   let validation = validateStatus('completed', null)
-  expect(validation).toBe('Exited at must be set to complete parking session')
+  expect(validation).toBe('Exited at must be set in order to complete parking session')
 })

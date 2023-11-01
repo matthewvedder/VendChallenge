@@ -4,6 +4,7 @@ import dayjs, { Dayjs } from 'dayjs';
 // components
 import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
 import TextField from '@mui/material/TextField';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
@@ -11,9 +12,15 @@ import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 // utils
-import { validatePhoneNumber, validateLicensePlate, validateEnterExit } from '../../../util/validations/parking-sessions'
+import { 
+  validatePhoneNumber, 
+  validateLicensePlate, 
+  validateEnterExit,
+  validateStatus
+} from '../../../util/validations/parking-sessions'
 // styles
 import './index.css'
+import { stat } from 'fs';
 
 
 export default function ParkingSessionForm() {
@@ -27,14 +34,44 @@ export default function ParkingSessionForm() {
   const [licensePlateError, setLicensePlateError] = React.useState<string|null>(null)
   const [phoneNumberError, setPhoneNumberError] = React.useState<string|null>(null)
   const [enterExitError, setEnterExitError] = React.useState<string|null>(null)
+  const [statusError, setStatusError] = React.useState<string|null>(null)
 
   const handleExitChange = (newValue: Dayjs | null) => {
     setExitedAt(newValue)
     setEnterExitError(validateEnterExit(enteredAt!, newValue!))
   }
 
+  const handleStatusChange = (newValue: string) => {
+    setStatus(newValue)
+    setStatusError(validateStatus(newValue as 'active' | 'completed', exitedAt))
+  }
+
+  
+
+  const validateAll = () => {
+    const licensePlateError = validateLicensePlate(licensePlateNumber)
+    const phoneNumberError = validatePhoneNumber(phoneNumber)
+    const enterExitError = validateEnterExit(enteredAt!, exitedAt!)
+    const statusError = validateStatus(status as 'active' | 'completed', exitedAt)
+    
+    if (licensePlateError || phoneNumberError || enterExitError || statusError ) {
+      setLicensePlateError(licensePlateError)
+      setPhoneNumberError(phoneNumberError)
+      setEnterExitError(enterExitError)
+      setStatusError(statusError)
+      return false
+    }
+    return true
+  }
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault()
+    if (!validateAll()) console.error('invalid form')
+  }
+
+
   return (
-    <div className='parking-session-form'>
+    <form className='parking-session-form' onSubmit={(event: React.FormEvent) => handleSubmit(event)}>
       <TextField 
         label="License Plate Number" 
         required
@@ -60,11 +97,16 @@ export default function ParkingSessionForm() {
       />
       
       <DateTimePicker
-        label="Entered At *"
+        label="Entered At"
         value={enteredAt}
         onChange={(value) => { setEnteredAt(value) }}
         timeSteps={{ hours: 1, minutes: 1, seconds: 1 }}
         views={['day', 'hours', 'minutes', 'month', 'seconds', 'year']}
+        slotProps={{
+          textField: {
+            required: true,
+          },
+        }}
       />
 
       <DateTimePicker
@@ -76,19 +118,27 @@ export default function ParkingSessionForm() {
         slotProps={{
           textField: {
             error: !!enterExitError,
-            helperText: enterExitError,
+            helperText: enterExitError
           },
         }}
       />
 
-      <FormControl>
+      <FormControl error={!!statusError}>
         <InputLabel>Status</InputLabel>
-        <Select label="Status" defaultValue='active'>
+        <Select 
+          label="Status"
+          value={status}
+          onChange={(event: SelectChangeEvent) => handleStatusChange(event.target.value)}
+        >
           <MenuItem value={'active'}>Active</MenuItem>
           <MenuItem value={'completed'}>Completed</MenuItem>
         </Select>
+        <FormHelperText>{statusError}</FormHelperText>
       </FormControl>
-      <Button variant="contained">Create</Button>
-    </div>
+      <Button variant="contained" type='submit'>
+        Create
+      </Button>
+      <Button variant="outlined">Cancel</Button>
+    </form>
   );
 }

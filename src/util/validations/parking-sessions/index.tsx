@@ -20,11 +20,12 @@ export const validateLicensePlate = (licensePlateNumber: string) => {
 
 
 export const validateEnterExit = (enteredAt: Dayjs, exitedAt: Dayjs) => {
+  if (!exitedAt || !enteredAt) return null
   if (exitedAt.isBefore(enteredAt)) return 'Exited at must be after entered at'
   return null
 }
 
 export const validateStatus = (status: 'active' | 'completed', exitedAt: Dayjs|null) => {
-  if (status === 'completed' && !exitedAt) return 'Exited at must be set to complete parking session'
+  if (status === 'completed' && !exitedAt) return 'Exited at must be set in order to complete parking session'
   return null
 }

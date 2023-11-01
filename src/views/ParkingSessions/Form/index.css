@@ -7,3 +7,7 @@
 .parking-session-form .MuiFormControl-root {
     margin-bottom: 30px;
 }
+
+.parking-session-form button {
+    margin-bottom: 10px;
+}
