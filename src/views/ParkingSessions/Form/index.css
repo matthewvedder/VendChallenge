@@ -11,3 +11,7 @@
 .parking-session-form button {
     margin-bottom: 10px;
 }
+
+.parking-session-form a {
+    all: unset;
+}
