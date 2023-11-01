@@ -39,6 +39,7 @@ export default function ParkingSessionForm() {
   const handleExitChange = (newValue: Dayjs | null) => {
     setExitedAt(newValue)
     setEnterExitError(validateEnterExit(enteredAt!, newValue!))
+    setStatusError(validateStatus(status as 'active' | 'completed', newValue!))
   }
 
   const handleStatusChange = (newValue: string) => {
