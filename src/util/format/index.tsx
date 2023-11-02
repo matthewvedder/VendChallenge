@@ -9,3 +9,8 @@ export const formatPhoneNumber = (phoneNumber: string) => {
   }
 }
 
+export const stripPhoneNumber = (phoneNumber: string) => {
+  if (!(typeof phoneNumber === 'string')) return phoneNumber
+  return phoneNumber.replace(/\D/g,'')
+}
+

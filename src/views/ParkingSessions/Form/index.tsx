@@ -12,6 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 // utils
+import { stripPhoneNumber } from '../../../util/format';
 import { 
   validatePhoneNumber, 
   validateLicensePlate, 
@@ -22,7 +23,7 @@ import {
 import './index.css'
 
 
-export default function ParkingSessionForm() {
+export default function ParkingSessionForm(props: { onSubmit: (parkingSession: any) => void }) {
   const navigate = useNavigate();
   // values
   const [licensePlateNumber, setLicensePlateNumber] = React.useState<string>('')
@@ -62,12 +63,21 @@ export default function ParkingSessionForm() {
       setStatusError(statusError)
       return false
     }
+    
     return true
   }
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
-    if (!validateAll()) console.error('invalid form')
+    // if (!validateAll()) return
+
+    props.onSubmit({
+      licensePlateNumber: licensePlateNumber.toUpperCase(),
+      phoneNumber: stripPhoneNumber(phoneNumber),
+      enteredAt: enteredAt!.unix(),
+      exitedAt: exitedAt ? exitedAt!.unix() : null,
+      status: status.toLowerCase()
+    })
   }
 
 

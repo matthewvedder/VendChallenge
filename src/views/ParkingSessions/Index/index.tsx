@@ -22,8 +22,8 @@ export default function ParkingSessions() {
         return ({ 
           ...doc.data(), 
           id: doc.id, 
-          enteredAt: dayjs(enteredAt).toDate(), 
-          exitedAt: dayjs(exitedAt).toDate() 
+          enteredAt: dayjs.unix(enteredAt).toDate(), 
+          exitedAt: dayjs.unix(exitedAt).toDate() 
         })
       })
     }
