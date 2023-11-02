@@ -1,5 +1,5 @@
 // libraries
-import * as React from 'react'
+import React, { useState } from 'react'
 import dayjs, { Dayjs } from 'dayjs';
 import { useNavigate } from 'react-router-dom'
 // components
@@ -10,6 +10,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button'
+import LoadingButton from '@mui/lab/LoadingButton';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 // utils
 import { stripPhoneNumber } from '../../../util/format';
@@ -24,6 +25,7 @@ import './index.css'
 
 
 export default function ParkingSessionForm(props: { onSubmit: (parkingSession: any) => void }) {
+  const [loading, setLoading] = useState<boolean>(false)
   const navigate = useNavigate();
   // values
   const [licensePlateNumber, setLicensePlateNumber] = React.useState<string>('')
@@ -51,6 +53,7 @@ export default function ParkingSessionForm(props: { onSubmit: (parkingSession: a
   
 
   const validateAll = () => {
+    setLoading(true)
     const licensePlateError = validateLicensePlate(licensePlateNumber)
     const phoneNumberError = validatePhoneNumber(phoneNumber)
     const enterExitError = validateEnterExit(enteredAt!, exitedAt!)
@@ -61,15 +64,17 @@ export default function ParkingSessionForm(props: { onSubmit: (parkingSession: a
       setPhoneNumberError(phoneNumberError)
       setEnterExitError(enterExitError)
       setStatusError(statusError)
+      setLoading(false)
       return false
     }
-    
+
+    setLoading(false)
     return true
   }
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
-    // if (!validateAll()) return
+    if (!validateAll()) return
 
     props.onSubmit({
       licensePlateNumber: licensePlateNumber.toUpperCase(),
@@ -146,9 +151,9 @@ export default function ParkingSessionForm(props: { onSubmit: (parkingSession: a
         </Select>
         <FormHelperText>{statusError}</FormHelperText>
       </FormControl>
-      <Button variant="contained" type='submit'>
+      <LoadingButton variant="contained" type='submit' loading={loading}>
         Create
-      </Button>
+      </LoadingButton>
       <Button 
         variant="outlined" 
         onClick={() => navigate('/')}

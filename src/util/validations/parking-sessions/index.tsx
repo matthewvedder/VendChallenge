@@ -4,7 +4,7 @@ import { Dayjs } from 'dayjs';
 // validations return null if valid or an error message if invalid
 
 export const validatePhoneNumber = (phoneNumber: string) => {
-  if (phoneNumber.trim().length === 0) return null
+  // if (phoneNumber.trim().length === 0) return null
   const parsedNumber = parsePhoneNumber(phoneNumber, 'US')
   let valid = false
   if (parsedNumber) valid = parsedNumber.isPossible()
