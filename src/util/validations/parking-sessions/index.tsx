@@ -1,5 +1,5 @@
 import parsePhoneNumber from 'libphonenumber-js'
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 
 // validations return null if valid or an error message if invalid
 

@@ -13,6 +13,8 @@ import {
   GridRowParams,
   GridToolbarContainer
 } from '@mui/x-data-grid';
+// types
+import { DocumentData } from "firebase/firestore";
 // utils
 import { formatPhoneNumber } from '../../../../util/format';
 // styles
@@ -58,7 +60,6 @@ const columns: GridColDef[] = [
     field: 'complete',
     type: 'actions',
     getActions: (params: GridRowParams) => {
-      console.log(params.row.status)
       if (params.row.status === 'completed') return []
       return [
         <Button variant="text">Complete</Button>
@@ -123,11 +124,15 @@ function EditToolbar() {
   );
 }
 
-export default function ParkingSessionsGrid() {
+interface ParkingSessionsGridProps {
+  parkingSessions: DocumentData[]
+}
+
+export default function ParkingSessionsGridProps(props: ParkingSessionsGridProps) {
   return (
     <Box sx={{ height: 400, width: '100%', marginTop: 10 }}>
       <DataGrid
-        rows={rows}
+        rows={props.parkingSessions}
         columns={columns}
         initialState={{
           pagination: {

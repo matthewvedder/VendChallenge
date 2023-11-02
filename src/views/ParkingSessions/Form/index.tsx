@@ -3,7 +3,6 @@ import * as React from 'react'
 import dayjs, { Dayjs } from 'dayjs';
 import { useNavigate } from 'react-router-dom'
 // components
-import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import TextField from '@mui/material/TextField';
@@ -21,7 +20,6 @@ import {
 } from '../../../util/validations/parking-sessions'
 // styles
 import './index.css'
-import { stat } from 'fs';
 
 
 export default function ParkingSessionForm() {
