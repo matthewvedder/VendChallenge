@@ -86,14 +86,14 @@ export default function ParkingSessionsGridProps(props: ParkingSessionsGridProps
   ]
   
   return (
-    <Box sx={{ height: 400, width: '100%', marginTop: 10 }}>
+    <Box sx={{ height: '70vh', width: '100%', marginTop: 10 }}>
       <DataGrid
         rows={props.parkingSessions}
         columns={columns}
         initialState={{
           pagination: {
             paginationModel: {
-              pageSize: 5,
+              pageSize: 20,
             },
           },
         }}
