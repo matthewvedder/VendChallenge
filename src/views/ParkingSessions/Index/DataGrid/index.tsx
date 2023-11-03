@@ -7,10 +7,10 @@ import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import { 
   DataGrid, 
-  GridColDef, 
-  GridActionsCellItem, 
+  GridColDef,
   GridRowParams,
-  GridToolbarContainer
+  GridToolbarContainer,
+  GridToolbarExport
 } from '@mui/x-data-grid';
 // types
 import { DocumentData } from "firebase/firestore";
@@ -19,8 +19,7 @@ import { formatPhoneNumber } from '../../../../util/format';
 // styles
 import './index.css'
 
-function EditToolbar() {
-
+function GridToolbar() {
   return (
     <GridToolbarContainer>
       <Link to="/parking-sessions/create">
@@ -28,6 +27,7 @@ function EditToolbar() {
           Create Parking Session
         </Button>
       </Link>
+      <GridToolbarExport />
     </GridToolbarContainer>
   );
 }
@@ -71,6 +71,7 @@ export default function ParkingSessionsGridProps(props: ParkingSessionsGridProps
       field: 'complete',
       type: 'actions',
       width: 200,
+      headerName: 'Actions',
       getActions: (params: GridRowParams) => {
         if (params.row.status === 'completed') return []
         return [
@@ -100,7 +101,7 @@ export default function ParkingSessionsGridProps(props: ParkingSessionsGridProps
         pageSizeOptions={[20, 50, 100]}
         disableRowSelectionOnClick
         slots={{
-          toolbar: EditToolbar,
+          toolbar: GridToolbar,
         }}
         sx={{
           "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
