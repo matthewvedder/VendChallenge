@@ -1,4 +1,5 @@
-import { formatPhoneNumber, stripPhoneNumber } from './index'
+import { ECDH } from 'crypto'
+import { formatPhoneNumber, stripPhoneNumber, stripLicensePlate } from './index'
 
 test('format phone number valid', () => {
     let formattedPhoneNumber = formatPhoneNumber('6178675309')
@@ -51,6 +52,31 @@ test('strip phone number invalid', () => {
 
   strippedPhoneNumber = stripPhoneNumber(undefined)
   expect(strippedPhoneNumber).toBe(undefined)
+})
+
+test('strip license plate valid', () => {
+  let strippedLicensePlate = stripLicensePlate('ABC123')
+  expect(strippedLicensePlate).toBe('ABC123')
+
+  strippedLicensePlate = stripLicensePlate('ABC 123')
+  expect(strippedLicensePlate).toBe('ABC123')
+
+  strippedLicensePlate = stripLicensePlate('ABC-123')
+  expect(strippedLicensePlate).toBe('ABC123')
+
+  strippedLicensePlate = stripLicensePlate('ABC- 123')
+  expect(strippedLicensePlate).toBe('ABC123')
+
+  strippedLicensePlate = stripLicensePlate('ABC_123')
+  expect(strippedLicensePlate).toBe('ABC123')
+})
+
+test('strip license plate invalid', () => {
+  let strippedLicensePlate = stripLicensePlate(null)
+  expect(strippedLicensePlate).toBe(null)
+
+  strippedLicensePlate = stripLicensePlate(undefined)
+  expect(strippedLicensePlate).toBe(undefined)
 })
 
 

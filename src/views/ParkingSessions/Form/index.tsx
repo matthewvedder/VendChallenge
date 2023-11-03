@@ -17,7 +17,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { database } from "../../../database"
 import { query, where, getDocs, collection } from "firebase/firestore";
 // utils
-import { stripPhoneNumber } from '../../../util/format';
+import { stripPhoneNumber, stripLicensePlate } from '../../../util/format';
 import { 
   validatePhoneNumber, 
   validateLicensePlate, 
@@ -64,7 +64,7 @@ export default function ParkingSessionForm(props: ParkingSessionFormProps) {
     const parkingSessionsRef = collection(database, "parking-sessions");
     const sessionsQuery = query(
       parkingSessionsRef, 
-      where("licensePlateNumber", "==", licensePlateNumber.toUpperCase()), 
+      where("licensePlateNumber", "==", stripLicensePlate(licensePlateNumber.toUpperCase())), 
       where("status", "==", "active")
     )
     
@@ -108,7 +108,7 @@ export default function ParkingSessionForm(props: ParkingSessionFormProps) {
     if (!formIsValid) return
 
     props.onSubmit({
-      licensePlateNumber: licensePlateNumber.toUpperCase(),
+      licensePlateNumber: stripLicensePlate(licensePlateNumber.toUpperCase()),
       phoneNumber: stripPhoneNumber(phoneNumber),
       enteredAt: enteredAt!.unix(),
       exitedAt: exitedAt ? exitedAt!.unix() : null,

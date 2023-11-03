@@ -14,3 +14,7 @@ export const stripPhoneNumber = (phoneNumber: string) => {
   return phoneNumber.replace(/\D/g,'')
 }
 
+export const stripLicensePlate = (licensePlateNumber: string) => {
+  if (!(typeof licensePlateNumber === 'string')) return licensePlateNumber
+  return licensePlateNumber.replace(/[^a-z0-9]/gi, '')
+}
