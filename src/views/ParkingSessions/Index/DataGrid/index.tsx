@@ -12,6 +12,7 @@ import {
   GridToolbarContainer,
   GridToolbarExport
 } from '@mui/x-data-grid';
+import Empty from '../Empty';
 // types
 import { DocumentData } from "firebase/firestore";
 // utils
@@ -102,6 +103,7 @@ export default function ParkingSessionsGridProps(props: ParkingSessionsGridProps
         disableRowSelectionOnClick
         slots={{
           toolbar: GridToolbar,
+          noRowsOverlay: Empty
         }}
         sx={{
           "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
