@@ -12,7 +12,8 @@ The Parking Session Tracker is a React application utilizing Typescript and Fire
 - To deploy a demo of the app so y'all could try to break it (please let me know if you do)
 - To showcase an adept understanding of design patterns and best practices
 - To illustrate how I approach unit testing on the front end where rapid UI changes often lead to unsustainable test suites
-
+- Make form inputs flexible in what formats they receive while being strict about validations and formatting before saving on the back end
+  
 ## Some things I didn't get to
 - Abstract calls to database out of components and writes tests with mock calls to Firestore
 - Error messages for backend errors
@@ -30,7 +31,7 @@ The Parking Session Tracker is a React application utilizing Typescript and Fire
 ## What this needs to be production ready
 
 ### Security
-- Front end has hard coded api key and other params for Firestore. Needs to use env variables.
+- Front end has hard coded api key and other params for Firestore. Needs to use env variables. Then the API key needs to be regenerated as it is now compromised.
 - Firestore needs security rule restricting reads to our web app
 - Firestore needs security rule restricting writes to our application server (after building API)
 - Firestore needs security rule for restricting reads and writes to authenticated users (after building Auth)
