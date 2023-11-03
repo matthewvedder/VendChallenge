@@ -41,7 +41,7 @@ The Parking Session Tracker is a React application utilizing Typescript and Fire
 - There is currently no error handling for when Firestore returns an error or is unavailable. This is a huge UX no no.
 
 ### Authenication
-- Of course
+- This is very useful without making distinctions between users
 
 ### Environments
 - Need dev, staging, and prod environments for Firestore, front end, and API once built. Staging and prod would use continuous deployment.
