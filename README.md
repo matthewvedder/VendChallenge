@@ -13,11 +13,6 @@ The Parking Session Tracker is a React application utilizing Typescript and Fire
 - To showcase an adept understanding of design patterns and best practices
 - To illustrate how I approach unit testing on the front end where rapid UI changes often lead to unsustainable test suites
 - Make form inputs flexible in what formats they receive while being strict about validations and formatting before saving on the back end
-  
-## Some things I didn't get to
-- Abstract calls to database out of components and writes tests with mock calls to Firestore
-- Error messages for backend errors
-- Add a locations field to index page and locations select input to form
 
 ## Choices of note
 - Build a separate Form component outside of Create view to easily add an Edit view
@@ -26,6 +21,11 @@ The Parking Session Tracker is a React application utilizing Typescript and Fire
 - Allow users to complete parking sessions with one click in the Index view
 - Add a freindly empty data message to get started on parking-sessions Index view. Here is a picture in case you don't get to see it. It's not super pretty, but a good UX I think.
   ![image](https://github.com/matthewvedder/VendChallenge/assets/16331910/9025f390-602d-4e69-95aa-a9a9ca0cfd56)
+
+## Some things I didn't get to
+- Abstract calls to database out of components and writes tests with mock calls to Firestore
+- Error messages for backend errors
+- Add a locations field to index page and locations select input to form
 
 
 ## What this needs to be production ready
@@ -50,9 +50,9 @@ The Parking Session Tracker is a React application utilizing Typescript and Fire
 ## Bonus Tasks (Outline)
 
 - **Simple Styling**: I added some very basic layout styling just for functionality. My next step would be to ask our designer for design files and implement the styles from these. Really I would have done this before I started building the UI though.
-- **Backend API**: NodeJS API would handle writes to Firestore. Write this using REST architecture. Configure Firestore security rules to only accept writes from the API servers.
-- **Authentication**: Implementation using Firebase Auth for secure access with Firebase JS SDK. https://firebase.google.com/docs/auth/web/start.
-- **Data Validation**: Use Joi or Class Validator for type safety and security in data models. This would resctrict which fields we allow to be written to the database.
+- **Backend API**: I would write a NodeJS API that would handle writes to Firestore. This would use REST architecture. I would also configure the Firestore security rules to only accept writes from the API servers.
+- **Authentication**: My implementation would use Firebase Auth for secure access with Firebase JS SDK. https://firebase.google.com/docs/auth/web/start.
+- **Data Validation**: My implementation would use Joi or Class Validator for type safety and security in data models. This would resctrict which fields we allow to be written to the database.
 - **Pagination**: To manage parking sessions in real life, both API and frontend would include pagination. Fire store supports this natively. Right now there is just front end pagination as the call to fetch parking sessions fetches the entire collection.
 - **Testing**: I added unit tests for utlity functions like formatting and validations. By abstracting these out of the components we make them reusable and testable. Next I would pull the calls to Firestore out of the components, mock the calls, and test them as well.
 - **Deployment**: I deployed this using Netlify for the purposes of the coding challenge, but in real life I would probably use Firebase deployment or some other Google Cloud utility based on Vend's tech stack.
