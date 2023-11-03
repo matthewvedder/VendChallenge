@@ -39,7 +39,7 @@ interface ParkingSessionsGridProps {
   loading: boolean
 }
 
-export default function ParkingSessionsGridProps(props: ParkingSessionsGridProps) {
+export default function ParkingSessionsGrid(props: ParkingSessionsGridProps) {
 
   const columns: GridColDef[] = [
     { 

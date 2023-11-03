@@ -1,5 +1,5 @@
 // libraries
-import React, { useState } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 // components
 import Form from '../Form'
@@ -9,10 +9,7 @@ import { collection, addDoc } from "firebase/firestore";
 // styles
 import './index.css'
 
-
-
 export default function CreateParkingSession() {
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const createParkingSession = async (parkingSession: {}) => {
@@ -20,7 +17,7 @@ export default function CreateParkingSession() {
       collection(database, "parking-sessions"), 
       parkingSession,
     ).then(() => navigate('/?success=true'))
-    .catch((error) => setError(error.message))
+    .catch((error) => console.error(error))
   }
 
   return (

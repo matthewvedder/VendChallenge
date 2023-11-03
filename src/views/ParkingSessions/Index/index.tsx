@@ -20,7 +20,6 @@ import { Snackbar, Alert } from "@mui/material";
 
 // styles
 import './index.css'
-import { url } from "inspector";
 
 export default function ParkingSessions() {
     const [parkingSessions, setParkingSessions] = React.useState<[]>([]);
