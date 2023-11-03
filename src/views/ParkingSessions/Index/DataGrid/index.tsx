@@ -3,7 +3,6 @@ import * as React from 'react';
 import { Link } from  'react-router-dom'
 // components
 import Box from '@mui/material/Box';
-import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import { 
@@ -20,97 +19,6 @@ import { formatPhoneNumber } from '../../../../util/format';
 // styles
 import './index.css'
 
-const columns: GridColDef[] = [
-  { 
-    field: 'licensePlateNumber', 
-    headerName: 'License Plate Number', 
-    width: 180 
-  },
-  { 
-    field: 'phoneNumber', 
-    headerName: 'Phone Number', 
-    width: 180, 
-    valueFormatter: ({ value }) => formatPhoneNumber(value || ''),
-  },
-  {
-    field: 'enteredAt',
-    headerName: 'Entered At',
-    type: 'dateTime',
-    width: 200,
-  },
-  {
-    field: 'exitedAt',
-    headerName: 'Exited At',
-    type: 'dateTime',
-    width: 200,
-  },
-  {
-    field: 'status',
-    headerName: 'Status',
-  },
-  {
-    field: 'actions',
-    type: 'actions',
-    headerName: 'Edit',
-    getActions: (params: GridRowParams) => [
-      <GridActionsCellItem icon={<EditIcon />} label="Edit" />,
-    ]
-  },
-  {
-    field: 'complete',
-    type: 'actions',
-    getActions: (params: GridRowParams) => {
-      if (params.row.status === 'completed') return []
-      return [
-        <Button variant="text">Complete</Button>
-      ]
-    }
-  }
-]
-
-const rows = [
-  {
-    id: 1,
-    licensePlateNumber: 'ABC123',
-    phoneNumber: '12345678901',
-    enteredAt: new Date(),
-    exitedAt: new Date(),
-    status: 'active',
-  },
-  {
-    id: 2,
-    licensePlateNumber: 'DEF456',
-    phoneNumber: '12345678901',
-    enteredAt: new Date(),
-    exitedAt: new Date(),
-    status: 'completed',
-  },
-  {
-    id: 3,
-    licensePlateNumber: 'GHI789',
-    phoneNumber: '12345678901',
-    enteredAt: new Date(),
-    exitedAt: new Date(),
-    status: 'active',
-  },
-  {
-    id: 4,
-    licensePlateNumber: 'JKL012',
-    phoneNumber: '12345678901',
-    enteredAt: new Date(),
-    exitedAt: new Date(),
-    status: 'completed',
-  },
-  {
-    id: 5,
-    licensePlateNumber: 'MNO345',
-    phoneNumber: '12345678901',
-    enteredAt: new Date(),
-    exitedAt: new Date(),
-    status: 'active',
-  }
-];
-
 function EditToolbar() {
 
   return (
@@ -125,10 +33,58 @@ function EditToolbar() {
 }
 
 interface ParkingSessionsGridProps {
-  parkingSessions: DocumentData[]
+  parkingSessions: DocumentData[],
+  completeParkingSession: (sessionId: string) => void
 }
 
 export default function ParkingSessionsGridProps(props: ParkingSessionsGridProps) {
+
+  const columns: GridColDef[] = [
+    { 
+      field: 'licensePlateNumber', 
+      headerName: 'License Plate Number', 
+      width: 180 
+    },
+    { 
+      field: 'phoneNumber', 
+      headerName: 'Phone Number', 
+      width: 180, 
+      valueFormatter: ({ value }) => formatPhoneNumber(value || ''),
+    },
+    {
+      field: 'enteredAt',
+      headerName: 'Entered At',
+      type: 'dateTime',
+      width: 200,
+    },
+    {
+      field: 'exitedAt',
+      headerName: 'Exited At',
+      type: 'dateTime',
+      width: 200,
+    },
+    {
+      field: 'status',
+      headerName: 'Status',
+    },
+    {
+      field: 'complete',
+      type: 'actions',
+      width: 200,
+      getActions: (params: GridRowParams) => {
+        if (params.row.status === 'completed') return []
+        return [
+          <Button 
+            variant="text"
+            onClick={() => props.completeParkingSession(params.row.id as string)}
+          >
+            End Session
+          </Button>
+        ]
+      }
+    }
+  ]
+  
   return (
     <Box sx={{ height: 400, width: '100%', marginTop: 10 }}>
       <DataGrid
@@ -146,6 +102,11 @@ export default function ParkingSessionsGridProps(props: ParkingSessionsGridProps
         slots={{
           toolbar: EditToolbar,
         }}
+        sx={{
+          "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
+             outline: "none !important",
+          },
+       }}
       />
     </Box>
   );

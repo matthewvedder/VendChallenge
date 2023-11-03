@@ -21,6 +21,7 @@ export default function CreateParkingSession() {
       collection(database, "parking-sessions"), 
       parkingSession,
     ).then(() => navigate('/'))
+    .catch((error) => setError(error.message))
   }
 
   return (

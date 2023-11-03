@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 
 // database
 import { database } from "../../../database"
-import { collection, onSnapshot, DocumentData } from "firebase/firestore";
+import { doc, collection, onSnapshot, DocumentData, setDoc } from "firebase/firestore";
 
 // components
 import DataGrid from "./DataGrid"
@@ -28,6 +28,17 @@ export default function ParkingSessions() {
       })
     }
 
+    const completeParkingSession = (sessionId: string) => {
+      const updatedSession = { status: 'completed', exitedAt: dayjs().unix() }
+      setDoc(
+        doc(database, "parking-sessions", sessionId), 
+        updatedSession,
+        { merge: true }
+      ).catch((error) => {
+        setError(error.message)
+      })
+    }
+
     useEffect(() => {
       onSnapshot(
         collection(database, "parking-sessions"), 
@@ -42,7 +53,7 @@ export default function ParkingSessions() {
     return (
         <div className="parking-sessions">
             <h1>Parking Sessions</h1>
-            <DataGrid parkingSessions={parkingSessions}/>
+            <DataGrid parkingSessions={parkingSessions} completeParkingSession={completeParkingSession} />
         </div>
     )
 }   
