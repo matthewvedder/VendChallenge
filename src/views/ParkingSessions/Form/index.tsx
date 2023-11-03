@@ -11,7 +11,11 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button'
 import LoadingButton from '@mui/lab/LoadingButton';
+import Alert from '@mui/material/Alert';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+// database
+import { database } from "../../../database"
+import { query, where, getDocs, collection } from "firebase/firestore";
 // utils
 import { stripPhoneNumber } from '../../../util/format';
 import { 
@@ -23,21 +27,25 @@ import {
 // styles
 import './index.css'
 
+interface ParkingSessionFormProps {
+  onSubmit: (parkingSession: any) => void
+}
 
-export default function ParkingSessionForm(props: { onSubmit: (parkingSession: any) => void }) {
+export default function ParkingSessionForm(props: ParkingSessionFormProps) {
   const [loading, setLoading] = useState<boolean>(false)
   const navigate = useNavigate();
   // values
-  const [licensePlateNumber, setLicensePlateNumber] = React.useState<string>('')
-  const [phoneNumber, setPhoneNumber] = React.useState<string>('') 
-  const [enteredAt, setEnteredAt] = React.useState<Dayjs|null>(dayjs())
-  const [exitedAt, setExitedAt] = React.useState<Dayjs|null>(null)
-  const [status, setStatus] = React.useState<string>('active')
+  const [licensePlateNumber, setLicensePlateNumber] = useState<string>('')
+  const [phoneNumber, setPhoneNumber] = useState<string>('') 
+  const [enteredAt, setEnteredAt] = useState<Dayjs|null>(dayjs())
+  const [exitedAt, setExitedAt] = useState<Dayjs|null>(null)
+  const [status, setStatus] = useState<string>('active')
   // errors
-  const [licensePlateError, setLicensePlateError] = React.useState<string|null>(null)
-  const [phoneNumberError, setPhoneNumberError] = React.useState<string|null>(null)
-  const [enterExitError, setEnterExitError] = React.useState<string|null>(null)
-  const [statusError, setStatusError] = React.useState<string|null>(null)
+  const [activeSessionsError, setActiveSessionsError] = useState<string|null>(null)
+  const [licensePlateError, setLicensePlateError] = useState<string|null>(null)
+  const [phoneNumberError, setPhoneNumberError] = useState<string|null>(null)
+  const [enterExitError, setEnterExitError] = useState<string|null>(null)
+  const [statusError, setStatusError] = useState<string|null>(null)
 
   const handleExitChange = (newValue: Dayjs | null) => {
     setExitedAt(newValue)
@@ -50,16 +58,38 @@ export default function ParkingSessionForm(props: { onSubmit: (parkingSession: a
     setStatusError(validateStatus(newValue as 'active' | 'completed', exitedAt))
   }
 
-  
 
-  const validateAll = () => {
+  const getActiveByPlate = () => {
+    // return error message if license plate number already has an active session
+    const parkingSessionsRef = collection(database, "parking-sessions");
+    const sessionsQuery = query(
+      parkingSessionsRef, 
+      where("licensePlateNumber", "==", licensePlateNumber.toUpperCase()), 
+      where("status", "==", "active")
+    )
+    
+    return getDocs(sessionsQuery)
+  }
+
+  const checkActiveSessions = async () => {
+    const querySnapshot = await getActiveByPlate()
+    if (!querySnapshot.empty) {
+      return 'There is already an active parking session for this license plate number'
+    }
+    return null
+  }
+
+
+  const validateAll = async () => {
     setLoading(true)
+    const activeSessionsError = await checkActiveSessions()
     const licensePlateError = validateLicensePlate(licensePlateNumber)
     const phoneNumberError = validatePhoneNumber(phoneNumber)
     const enterExitError = validateEnterExit(enteredAt!, exitedAt!)
     const statusError = validateStatus(status as 'active' | 'completed', exitedAt)
     
-    if (licensePlateError || phoneNumberError || enterExitError || statusError ) {
+    if (activeSessionsError || licensePlateError || phoneNumberError || enterExitError || statusError ) {
+      setActiveSessionsError(activeSessionsError)
       setLicensePlateError(licensePlateError)
       setPhoneNumberError(phoneNumberError)
       setEnterExitError(enterExitError)
@@ -72,9 +102,10 @@ export default function ParkingSessionForm(props: { onSubmit: (parkingSession: a
     return true
   }
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
-    if (!validateAll()) return
+    const formIsValid = await validateAll()
+    if (!formIsValid) return
 
     props.onSubmit({
       licensePlateNumber: licensePlateNumber.toUpperCase(),
@@ -151,6 +182,9 @@ export default function ParkingSessionForm(props: { onSubmit: (parkingSession: a
         </Select>
         <FormHelperText>{statusError}</FormHelperText>
       </FormControl>
+
+      {activeSessionsError && <Alert severity="error">{activeSessionsError}</Alert>}
+      
       <LoadingButton variant="contained" type='submit' loading={loading}>
         Create
       </LoadingButton>

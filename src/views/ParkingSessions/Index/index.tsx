@@ -43,6 +43,7 @@ export default function ParkingSessions() {
     }
 
     useEffect(() => {
+      // fetch parking sessions in real time
       onSnapshot(
         collection(database, "parking-sessions"), 
         (snapshot) => {
