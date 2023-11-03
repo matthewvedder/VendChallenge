@@ -4,7 +4,15 @@ import dayjs from "dayjs";
 
 // database
 import { database } from "../../../database"
-import { doc, collection, onSnapshot, DocumentData, setDoc } from "firebase/firestore";
+import { 
+  doc, 
+  collection, 
+  onSnapshot, 
+  DocumentData, 
+  setDoc,
+  query,
+  orderBy
+} from "firebase/firestore";
 
 // components
 import DataGrid from "./DataGrid"
@@ -16,7 +24,7 @@ import { url } from "inspector";
 
 export default function ParkingSessions() {
     const [parkingSessions, setParkingSessions] = React.useState<[]>([]);
-    const [error, setError] = React.useState<Error | null>(null);
+    const [loading, setLoading] = React.useState<boolean>(true);
     const [alertOpen, setAlertOpen] = React.useState(false);
 
     const mapParkingSessions = (snapshot: DocumentData): any => {
@@ -38,21 +46,25 @@ export default function ParkingSessions() {
         updatedSession,
         { merge: true }
       ).catch((error) => {
-        setError(error.message)
+        console.error(error)
       })
     }
 
     useEffect(() => {
       // fetch parking sessions in real time
+      const parkingSessionsRef = collection(database, "parking-sessions")
+      const sessionsQuery = query(parkingSessionsRef, orderBy('createdAt', 'desc'))
       onSnapshot(
-        collection(database, "parking-sessions"), 
+        sessionsQuery, 
         (snapshot) => {
           setParkingSessions(mapParkingSessions(snapshot))
+          setLoading(false)
         },
         (error) => {
-          setError(error)
+          console.error(error)
+          setLoading(false)
         });
-    }, [database])
+    }, [])
 
     useEffect(() => {
       // check for success query param and show alert
@@ -77,7 +89,11 @@ export default function ParkingSessions() {
     return (
         <div className="parking-sessions">
           <h1>Parking Sessions</h1>
-          <DataGrid parkingSessions={parkingSessions} completeParkingSession={completeParkingSession} />
+          <DataGrid 
+            parkingSessions={parkingSessions} 
+            completeParkingSession={completeParkingSession} 
+            loading={loading}
+          />
           <Snackbar
             autoHideDuration={5000}
             open={alertOpen}

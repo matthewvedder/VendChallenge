@@ -112,7 +112,8 @@ export default function ParkingSessionForm(props: ParkingSessionFormProps) {
       phoneNumber: stripPhoneNumber(phoneNumber),
       enteredAt: enteredAt!.unix(),
       exitedAt: exitedAt ? exitedAt!.unix() : null,
-      status: status.toLowerCase()
+      status: status.toLowerCase(),
+      createdAt: dayjs().unix()
     })
   }
 

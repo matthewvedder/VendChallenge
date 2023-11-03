@@ -35,7 +35,8 @@ function GridToolbar() {
 
 interface ParkingSessionsGridProps {
   parkingSessions: DocumentData[],
-  completeParkingSession: (sessionId: string) => void
+  completeParkingSession: (sessionId: string) => void,
+  loading: boolean
 }
 
 export default function ParkingSessionsGridProps(props: ParkingSessionsGridProps) {
@@ -92,6 +93,7 @@ export default function ParkingSessionsGridProps(props: ParkingSessionsGridProps
       <DataGrid
         rows={props.parkingSessions}
         columns={columns}
+        loading={props.loading}
         initialState={{
           pagination: {
             paginationModel: {
