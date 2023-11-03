@@ -66,4 +66,7 @@ test('validateStatus valid', () => {
 test('validateStatus invalid', () => {
   let validation = validateStatus('completed', null)
   expect(validation).toBe('Exited at must be set in order to complete parking session')
+
+  validation = validateStatus('active', dayjs())
+  expect(validation).toBe('Exited at must be empty if status is active')
 })

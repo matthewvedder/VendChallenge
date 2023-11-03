@@ -27,5 +27,6 @@ export const validateEnterExit = (enteredAt: Dayjs, exitedAt: Dayjs) => {
 
 export const validateStatus = (status: 'active' | 'completed', exitedAt: Dayjs|null) => {
   if (status === 'completed' && !exitedAt) return 'Exited at must be set in order to complete parking session'
+  if (status === 'active' && exitedAt) return 'Exited at must be empty if status is active'
   return null
 }
