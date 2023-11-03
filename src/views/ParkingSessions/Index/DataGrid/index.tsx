@@ -86,7 +86,7 @@ export default function ParkingSessionsGridProps(props: ParkingSessionsGridProps
   ]
   
   return (
-    <Box sx={{ height: '70vh', width: '100%', marginTop: 10 }}>
+    <Box sx={{ height: '70vh', width: '100%', marginTop: '20px' }}>
       <DataGrid
         rows={props.parkingSessions}
         columns={columns}
