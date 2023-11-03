@@ -27,7 +27,7 @@ The Parking Session Tracker is a React application utilizing Typescript and Fire
   ![image](https://github.com/matthewvedder/VendChallenge/assets/16331910/9025f390-602d-4e69-95aa-a9a9ca0cfd56)
 
 
-## Why this isn't production ready
+## What this needs to be production ready
 
 ### Security
 - Front end has hard coded api key and other params for Firestore. Needs to use env variables.
@@ -41,7 +41,7 @@ The Parking Session Tracker is a React application utilizing Typescript and Fire
 - There is currently no error handling for when Firestore returns an error or is unavailable. This is a huge UX no no.
 
 ### Authenication
-- This is very useful without making distinctions between users
+- We really need user authentication in order to show users the appropriate parking sessions, and for security as well.
 
 ### Environments
 - Need dev, staging, and prod environments for Firestore, front end, and API once built. Staging and prod would use continuous deployment.
