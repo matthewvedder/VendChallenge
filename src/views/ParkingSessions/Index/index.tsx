@@ -8,13 +8,16 @@ import { doc, collection, onSnapshot, DocumentData, setDoc } from "firebase/fire
 
 // components
 import DataGrid from "./DataGrid"
+import { Snackbar, Alert } from "@mui/material";
 
 // styles
 import './index.css'
+import { url } from "inspector";
 
 export default function ParkingSessions() {
     const [parkingSessions, setParkingSessions] = React.useState<[]>([]);
     const [error, setError] = React.useState<Error | null>(null);
+    const [alertOpen, setAlertOpen] = React.useState(false);
 
     const mapParkingSessions = (snapshot: DocumentData): any => {
       return snapshot.docs.map((doc: DocumentData) => {
@@ -50,10 +53,40 @@ export default function ParkingSessions() {
         });
     }, [database])
 
+    useEffect(() => {
+      // check for success query param and show alert
+      // I would normally use something like redux to manage state across components
+      const queryString = window.location.search
+      const urlParams = new URLSearchParams(queryString)
+      const success = urlParams.get('success')
+      if (success) {
+        setAlertOpen(true)
+        window.history.pushState({}, "", "/")
+      }
+    }, [])
+
+    const handleAlertClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+  
+      setAlertOpen(false);
+    };
+
     return (
         <div className="parking-sessions">
-            <h1>Parking Sessions</h1>
-            <DataGrid parkingSessions={parkingSessions} completeParkingSession={completeParkingSession} />
+          <h1>Parking Sessions</h1>
+          <DataGrid parkingSessions={parkingSessions} completeParkingSession={completeParkingSession} />
+          <Snackbar
+            autoHideDuration={5000}
+            open={alertOpen}
+            onClose={handleAlertClose}
+            anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+          >
+            <Alert onClose={handleAlertClose} severity="success" sx={{ width: '100%' }}>
+              Successfully created parking session!
+            </Alert>
+          </Snackbar>
         </div>
     )
 }   

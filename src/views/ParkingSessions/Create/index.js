@@ -20,7 +20,7 @@ export default function CreateParkingSession() {
     addDoc(
       collection(database, "parking-sessions"), 
       parkingSession,
-    ).then(() => navigate('/'))
+    ).then(() => navigate('/?success=true'))
     .catch((error) => setError(error.message))
   }
 
